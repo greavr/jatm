@@ -1,0 +1,15 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["build", "-t", "gcr.io/rgreaves-debugger/front-end:$REVISION_ID", "."]
+  dir: '/workspace/Python/'
+- name: 'gcr.io/cloud-builders/docker'
+  args: ["push", "gcr.io/rgreaves-debugger/front-end:$REVISION_ID"]
+- name: 'gcr.io/cloud-builders/kubectl'
+  args:
+  - 'set'
+  - 'image'
+  - 'deployment/jatm'
+  - 'python-front-end=gcr.io/rgreaves-debugger/front-end:$REVISION_ID'
+  env:
+  - 'CLOUDSDK_CONTAINER_CLUSTER=jatm-demo'
+  - 'CLOUDSDK_COMPUTE_ZONE=us-central1-a'

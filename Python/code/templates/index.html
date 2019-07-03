@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <form action="" method="post" role="form">
+    {{ form.csrf }}
+    <b>Task Title:</b> <br>
+    <input type="Text" class="form-control" name="TaskTitle" id="TaskTitle" ><br>
+    <b>Task Text:</b> <br>
+    <textarea rows="5" cols="30" name="TaskText" class="form-control" id="TaskText" ></textarea><br>
+    <input type="submit" class="btn btn-success" value="Submit">
+  </form>
+  <br />
+  {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+      {% for message in messages %}
+          {% if "Error" not in message[1]: %}
+              <div class="alert alert-info">
+              <strong>Success! </strong> {{ message[1] }}
+              </div>
+          {% endif %}
+          {% if "Error" in message[1]: %}
+              <div class="alert alert-danger">
+              <strong>Error: </strong> {{ message[1] }}
+              </div>
+          {% endif %}
+      {% endfor %}
+          {% endif %}
+      {% endwith %}
+    </div></div>
+    <div id="content"><div id="innercontent">
+      <table class="table" id="tasks" width="100%">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Task Summary</th>
+                <th>Complete</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for aTask in Tasks %}
+        <tr>
+          <td> {{ aTask[0] }} </td>
+          <td> {{ aTask[1] }} </td>
+          <td> {{ 'Complete' if aTask[3] == 1 else 'In Progress' }} </td>
+          <td> <a href="/edit/{{ aTask[2] }}">Edit</a> </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+{% endblock %}
