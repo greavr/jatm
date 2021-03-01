@@ -85,7 +85,7 @@ if __name__ == "__main__":
     # Enable Profiler
     try:
         googlecloudprofiler.start(
-            service='hello-profiler',
+            service='jatm',
             service_version='1.0.1',
             verbose=3,
         )
