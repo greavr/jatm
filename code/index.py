@@ -55,7 +55,7 @@ def default():
         else:
             flash('Error: All Fields are Required')
 
-    size = alltasks.len()
+    size = len(allTasks)
     logging.info(f"Getting Main page with {size}")
 
     return render_template('index.html', form=form, Tasks=allTasks)
@@ -103,7 +103,7 @@ if __name__ == "__main__":
         )
     except (ValueError, NotImplementedError) as exc:
         logging.error(f"Unable to enable profiling, error {exc}")
-        print(exc)  # Handle errors here
+        #print(exc)  # Handle errors here
 
 
     app.run(host='0.0.0.0', port=8080)
