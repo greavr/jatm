@@ -1,6 +1,8 @@
 from flask import Flask, render_template, flash, request, redirect
 from wtforms import Form, TextField, TextAreaField, validators, StringField, SubmitField
 import googlecloudprofiler
+import google.cloud.logging 
+import logging
 
 try:
     import googleclouddebugger
@@ -10,6 +12,7 @@ except ImportError:
 
 
 #App config
+LoggingClient = google.cloud.logging.Client()
 DEBUG = True
 app = Flask(__name__)
 
@@ -52,6 +55,9 @@ def default():
         else:
             flash('Error: All Fields are Required')
 
+    size = alltasks.len()
+    logging.info(f"Getting Main page with {size}")
+
     return render_template('index.html', form=form, Tasks=allTasks)
 
 @app.route('/edit/<int:id>', methods=["POST", "GET"])
@@ -79,9 +85,15 @@ def task(id):
         if aTask[2] == id:
             editTask = aTask
 
+    logging.info(f"Editing task {id}, with the values Title: {TaskTitle}, Text: {TaskText}, Cmpleted: {TaskCompleted}")
+
     return render_template('update.html', form=form, Tasks=allTasks, aTask=editTask)
 
 if __name__ == "__main__":
+    # Enable logging
+    LoggingClient.get_default_handler()
+    LoggingClient.setup_logging()
+
     # Enable Profiler
     try:
         googlecloudprofiler.start(
@@ -90,6 +102,8 @@ if __name__ == "__main__":
             verbose=3,
         )
     except (ValueError, NotImplementedError) as exc:
+        logging.error(f"Unable to enable profiling, error {exc}")
         print(exc)  # Handle errors here
+
 
     app.run(host='0.0.0.0', port=8080)
