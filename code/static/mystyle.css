@@ -1,0 +1,50 @@
+body {
+  background-image: url("https://storage.cloud.google.com/rgreaves-public/gcp-header-logo.png");
+  background-repeat: no-repeat;
+  background-size: auto;
+  background-attachment: fixed;
+  background-position: center left;
+  background-color: lightgrey;
+}
+
+.container{
+    background-color: white;
+    width: 800px;
+    margin: 0 auto;
+    margin-top: -25px;
+    height: 100vh;
+}
+#header {
+  text-align: Left ;
+  font-size: 120%;
+}
+
+#content {
+  float: left ;
+  width: 60% ;
+}
+
+#formbar {
+  float: left ;
+  width: 35% ;
+  border-right:1px solid #000;
+}
+
+#innercontent {
+  padding-left: 10px ;
+  padding-right: 10px ;
+}
+#innerformbar {
+  padding-left: 5px ;
+  padding-right: 5px ;
+}
+
+h1 {
+  color: navy;
+  margin-left: 20px;
+}
+
+h3 {
+    text-align: center;
+    color: #6a6a6b;
+}

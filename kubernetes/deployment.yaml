@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jatm
+  labels:
+    app: jatm-front-end
+    env: prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jatm-front-end
+  template:
+    metadata:
+      labels:
+        app: jatm-front-end
+    spec:
+      containers:
+        - name: python-front-end
+          image: gcr.io/rgreaves-debugger/front-end
+          env:
+          - name: GCLOUD_PROJECT
+            value: "rgreaves-debugger"
+          ports:
+          - containerPort: 5000
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 5000
+            initialDelaySeconds: 3
+            periodSeconds: 3
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jatm-service
+spec:
+  selector:
+    app: jatm-front-end
+  type: NodePort
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: jatm-lb
+spec:
+  backend:
+    serviceName: jatm-service
+    servicePort: 80
